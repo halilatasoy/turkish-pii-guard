@@ -18,7 +18,7 @@ Zor dilimler: caps 0.514 · uzun 0.521 · sözle 0.649 · çok kişi 0.450 · ol
 | Model | Eğitim | Tam eşleşme | Şema-nötr | beyaz | kara | kapsam dışı | negatif | tam |
 |---|---|---|---|---|---|---|---|---|
 | cagrigungor/pii-guard-turkish-270m | — | 0.743 | 0.773 | 0.620 | 0.747 | 0.730 | 0.895 | 0.729 |
-| **local_24k** (bu repo) | 24k satır, 1 epoch, M3 Ultra MPS, 38 dk | **0.882** | **0.903** | 0.900 | 0.893 | 0.960 | 0.865 | 0.854 |
+| **local_24k** → [halilatasoy/turkish-pii-detection-v01](https://huggingface.co/halilatasoy/turkish-pii-detection-v01) | 24k satır, 1 epoch, M3 Ultra MPS, 38 dk | **0.882** | **0.903** | 0.900 | 0.893 | 0.960 | 0.865 | 0.854 |
 
 Dilimler (local_24k): caps 0.802 · uzun 0.656 · sözle 0.946 · çok kişi 0.600 · ekli 0.758 · kayıt 0.976 · olmayan etiket talebi 0.917.
 Kalan hatalar: uzun/çok kişili metinde kelime düşürme ("dekont da" → "dekont"), sayısal tuzaklarda yanlış etiket
@@ -64,6 +64,13 @@ Ek denemeler:
 python scripts/train.py --model google/gemma-3-270m-it --out outputs/base_v1 --epochs 2 --lr 1e-4   # tabandan
 python scripts/train.py --model models/pii-guard-turkish-270m --out outputs/lora_v1 --lora_r 32 --lr 2e-4
 python scripts/eval.py --model outputs/base_v1/final --out results/base_v1.csv --batch 64
+```
+
+## Hub'a yükleme
+
+```bash
+hf auth login   # bir kez, tarayıcı ile
+python scripts/push_to_hub.py --model outputs/<run>/final --repo halilatasoy/turkish-pii-detection-v01 --results results/<run>.json
 ```
 
 ## Notlar
