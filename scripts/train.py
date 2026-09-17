@@ -12,7 +12,16 @@ Works on CUDA (bf16) and Apple MPS (for smoke tests). Full fine-tune by default;
 import argparse, json, math, os, random, sys, time
 import torch
 from torch.utils.data import Dataset
-from transformers import (AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments, DataCollatorForSeq2Seq)
+from transformers import (AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments, DataCollatorForSeq2Seq, TrainerCallback)
+
+
+class MpsCacheCallback(TrainerCallback):
+    """Apple MPS caching allocator grows without bound on variable-length batches; flush it periodically."""
+    def on_step_end(self, args, state, control, **kw):
+        if state.global_step % 25 == 0:
+            torch.mps.empty_cache()
+    def on_evaluate(self, args, state, control, **kw):
+        torch.mps.empty_cache()
 
 
 def build_prompt(tok, instruction, text):
@@ -105,7 +114,8 @@ def main():
     dropped = [k for k in ta_kwargs if k not in allowed]
     if dropped: print("TrainingArguments: dropping unsupported kwargs for this transformers version:", dropped, flush=True)
     targs = TrainingArguments(**{k: v for k, v in ta_kwargs.items() if k in allowed})
-    trainer = Trainer(model=model, args=targs, train_dataset=train_ds, eval_dataset=val_ds, data_collator=collator)
+    trainer = Trainer(model=model, args=targs, train_dataset=train_ds, eval_dataset=val_ds, data_collator=collator,
+                      callbacks=[MpsCacheCallback()] if mps else [])
     t0 = time.time()
     trainer.train(resume_from_checkpoint=args.resume)
     print(f"train time: {(time.time()-t0)/60:.1f} min", flush=True)
