@@ -1,0 +1,11 @@
+.venv/
+models/
+outputs/
+data/*.jsonl
+data/.cache/
+data/gen.log
+results/*.log
+__pycache__/
+*.pyc
+.DS_Store
+nohup.out

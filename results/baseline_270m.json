@@ -1,0 +1,54 @@
+{
+  "model": "models/pii-guard-turkish-270m",
+  "n": 1000,
+  "exact_match": 0.743,
+  "schema_neutral": 0.773,
+  "schema_neutral_n": 903,
+  "by_kategori": {
+    "beyaz_liste": 0.62,
+    "kapsam_disi": 0.73,
+    "kara_liste": 0.747,
+    "negatif": 0.895,
+    "tam": 0.729
+  },
+  "by_ozellik": {
+    "caps": {
+      "acc": 0.514,
+      "n": 111
+    },
+    "cok_kisi": {
+      "acc": 0.45,
+      "n": 20
+    },
+    "duz": {
+      "acc": 0.779,
+      "n": 285
+    },
+    "ekli": {
+      "acc": 0.833,
+      "n": 66
+    },
+    "kayit": {
+      "acc": 0.704,
+      "n": 247
+    },
+    "olmayan_etiket_talebi": {
+      "acc": 0.604,
+      "n": 48
+    },
+    "sozle": {
+      "acc": 0.649,
+      "n": 37
+    },
+    "tuzak": {
+      "acc": 0.895,
+      "n": 200
+    },
+    "uzun": {
+      "acc": 0.521,
+      "n": 96
+    }
+  },
+  "out_of_schema_rows": 2,
+  "seconds": 70
+}
