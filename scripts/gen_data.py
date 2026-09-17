@@ -471,6 +471,51 @@ ekstre {EMAIL} adresine {AD} adına gönderildi
 {AD} {DOGUM_TARIHI} {TCKN} kimlik fotokopisi eklendi
 şikayet: {AD} {TEL} kart {KART} çift çekim
 {AD} adına kayıtlı {PLAKA} plakalı araç haczedildi
+
+{HESAP_NO:DAT} otomatik ödeme talimatı tanımlansın
+{HESAP_NO:GEN} bakiyesi eksiye düştü
+{HESAP_NO:ABL} çıkan havale iade edildi
+{KART:GEN} limiti artırılsın
+{KART:DAT} taksit tanımlanamıyor
+{KART:GEN} son dört hanesi ile doğrulama yapıldı
+{PLAKA:GEN} otoyol geçişi ücretlendirildi
+{PLAKA:DAT} kesilen ceza itiraz edildi
+{MUSTERI_NO:DAT} özel kampanya tanımlandı
+{MUSTERI_NO:GEN} talebi kapatıldı
+{IBAN:DAT} yapılan havale beklemede
+{IBAN:GEN} sahibi ile isim uyuşmuyor
+{SOZLESME_NO:GEN} süresi doldu
+{POLICE_NO:DAT} ait hasar dosyası kapatıldı
+{TEL:GEN} üzerine kayıtlı abonelik sorgulandı
+{IMEI:GEN} garanti kaydı bulunamadı
+{SGK_NO:DAT} ait prim borcu yok
+{VERGI_NO:GEN} borç sorgusu yapıldı
+{PASAPORT_NO:GEN} geçerlilik tarihi kontrol edildi
+{EHLIYET_NO:GEN} ceza puanı sorgulandı
+{SICIL_NO:GEN} izin bakiyesi güncellendi
+{CIHAZ_ID:GEN} eşleştirmesi kaldırıldı
+{IP_ADRES:ABL} yapılan istekler engellendi
+{KULLANICI_ADI:DAT} yeni rol atandı
+{EMAIL:DAT} ekstre de gönderilsin
+{TEL:DAT} bilgi mesajı da gitsin
+{AD} {ISYERI} personeli olarak kayıtlı
+{AD} {TEL} numarasından da ulaşılabilir
+personel {AD} {SICIL_NO} sicil ile {ISYERI} bordrosunda
+{AD} {DOGUM_YERI} doğumlu {UYRUK} uyruklu
+{AD} {ADRES} adresinde ikamet ediyor
+{AD} {EMAIL} {TEL} iletişim kartı güncellendi
+ödeme {IBAN} {AD} adına {MAAS} tutarında yapıldı
+{KART} {KART_SKT} {CVV} ile online ödeme denendi
+{PLAKA} {SASI_NO} {MOTOR_NO} araç kaydı tamamlandı
+{IP_ADRES} {MAC_ADRES} {CIHAZ_ID} cihaz parmak izi alındı
+{USERFILL} müşteri {AD} tel {TEL} arasın
+{USERFILL} {AD:GEN} ekstresi de {EMAIL} adresine gitsin
+{USERFILL} {TCKN} için de kimlik doğrulaması yapılsın
+sağlık raporunda {SAGLIK} yazıyor ama sigorta primi değişmedi
+adli sicil belgesinde {CEZA_KAYDI} ibaresi var ama işe alım tamamlandı
+hem {AD} hem {AD} aynı adreste görünüyor
+hem {TEL} hem {EMAIL} güncellenecek
+{AD} için de {KART} kartı yeniden basılsın
 """.strip().split("\n")
 TEMPLATES = [t.strip() for t in T if t.strip()]
 PH = re.compile(r"\{([A-Z_]+)(?::([A-Z]+))?\}")
@@ -531,10 +576,21 @@ NEG = [
     "stok kodu {n5} güncellendi", "ürün kodu {n6} pasif", "barkod {n9} okunmuyor", "seri no alanı boş", "parti numarası {n5}",
     "kat mülkiyeti {n2} daire", "arsa {n4} metrekare", "kira {n5} TL", "aidat {n4} TL", "depozito {n5} TL",
 ]
+NEG_SUBJ = ["şube müdürü", "muhasebe ekibi", "it departmanı", "insan kaynakları", "çağrı merkezi", "kredi komitesi", "uyum birimi", "operasyon ekibi",
+            "satın alma", "hukuk birimi", "yönetim kurulu", "bölge müdürlüğü", "kart operasyonları", "dijital bankacılık", "risk yönetimi", "iç denetim",
+            "bilgi güvenliği", "pazarlama ekibi", "şube personeli", "saha ekibi", "teknik servis", "kurumsal iletişim", "hazine birimi", "kalite ekibi"]
+NEG_PRED = ["toplantıyı {hh}:{mm} e aldı", "raporu {n2} sayfa olarak hazırladı", "{n3} adet talebi kapattı", "bütçeyi yüzde {n2} artırdı", "yeni prosedürü yayınladı",
+            "eğitimi {date} tarihine erteledi", "sistem bakımını duyurdu", "{n2} personel için izin planladı", "kampanyayı {month} ayına taşıdı", "denetim takvimini paylaştı",
+            "{n4} numaralı sürümü test ediyor", "stok sayımını tamamladı", "{n5} TL tutarındaki faturayı onayladı", "haftalık hedefi {n3} olarak belirledi", "yeni pos cihazlarını dağıttı",
+            "kasa açığını {n4} TL olarak raporladı", "toplantı odasını {n3} olarak değiştirdi", "sürüm notlarını gönderdi", "hata kaydı ERR-{n4} ü kapattı", "{n2} şubeye tebligat gönderdi",
+            "kimlik doğrulama akışını güncelledi", "iban formatı kontrolünü sıkılaştırdı", "kart limit politikasını değiştirdi", "şifre kurallarını yeniledi", "adres doğrulama servisini açtı",
+            "maaş promosyonu anlaşmasını imzaladı", "sağlık sigortası teklifini reddetti", "sendika görüşmesini erteledi", "engelli erişim projesini başlattı", "araç filosu ihalesini açtı",
+            "cihaz envanterini güncelledi", "ip beyaz listesini yeniledi", "plaka tanıma sistemini devreye aldı", "ruhsat işlemlerini e-devlete taşıdı", "personel sicil arşivini taradı",
+            "referans kontrol sürecini kaldırdı", "yaş sınırı politikasını güncelledi", "uyruk alanını opsiyonel yaptı", "doğum günü kutlamasını {hh}:00 a aldı", "kan bağışı etkinliği düzenledi"]
 PROJ = ["Fatih", "Anadolu", "Marmara", "Ege", "Karadeniz", "Toros", "Kuzey", "Güneş", "Zafer", "Atlas", "Boğaziçi", "Kapadokya"]
 
 def neg_text():
-    t = R.choice(NEG)
+    t = R.choice(NEG) if R.random() < 0.6 else R.choice(NEG_SUBJ) + " " + R.choice(NEG_PRED)
     def sub(m):
         k = m.group(1)
         if k.startswith("n"): return rnz(int(k[1:])) if int(k[1:]) >= 2 else rd(1)
@@ -549,8 +605,14 @@ def neg_text():
     return re.sub(r"\{(\w+)\}", sub, t)
 
 # ----------------------------------------------------------------------------- segment builder
+FILL_PRE = ["lütfen", "acil", "bilginize", "not:", "tekrar", "bugün", "dün", "ayrıca", "hatırlatma:", "önemli:", "rica ederim", "bir de", "ek olarak", "hala"]
+FILL_POST = [" lütfen", " teşekkürler", " acil", " bilginize", " en kısa sürede", "?", " rica ederim", " dönüş bekliyorum", " not düşüldü", " onay bekliyor"]
+
 def fill(template, sozle):
     """template -> list of segments: str or (tag, value)."""
+    template = template.replace("{USERFILL}", R.choice(FILL_PRE))
+    if R.random() < 0.12: template = R.choice(FILL_PRE) + " " + template
+    if R.random() < 0.12: template = template + R.choice(FILL_POST)
     segs, pos = [], 0
     for m in PH.finditer(template):
         segs.append(template[pos:m.start()])
@@ -591,8 +653,10 @@ def build_text(kind, sozle, ekli):
         if R.random() < 0.15 and isinstance(segs[0], str): segs[0] = segs[0][0].upper().replace("I", "İ") if segs[0][0] == "i" else segs[0][0].upper() + segs[0][1:] if len(segs[0]) > 1 else segs[0]
         return segs
     if kind == "cok_kisi":
-        a, b = fill(R.choice(PLAIN_T + EKLI_T), sozle), fill(R.choice(PLAIN_T + EKLI_T), sozle)
-        return a + [R.choice([" ayrıca ", " ayrıca ", "; ayrıca ", ". ayrıca ", " ve "])] + b
+        parts = [fill(R.choice(PLAIN_T + EKLI_T), sozle) for _ in range(R.choice([2, 2, 2, 3]))]
+        segs = parts[0]
+        for p_ in parts[1:]: segs = segs + [R.choice([" ayrıca ", " ayrıca ", "; ayrıca ", ". ayrıca ", " ve ", ", öte yandan ", " bunun yanında "])] + p_
+        return segs
     if kind == "uzun":
         n = R.randint(3, 6)
         segs = []
@@ -672,13 +736,13 @@ def join_tr(items):
 
 def pick_kind(long_bias=False):
     r = R.random()
-    if r < 0.42: return "duz"
-    if r < 0.70: return "kayit"
-    if r < 0.90: return "uzun"
+    if r < 0.38: return "duz"
+    if r < 0.62: return "kayit"
+    if r < 0.86: return "uzun"
     return "cok_kisi"
 
 def make(kategori):
-    caps = R.random() < 0.22
+    caps = R.random() < 0.26
     sozle = R.random() < 0.18
     if kategori == "negatif":
         n = R.choice([1, 1, 1, 1, 2, 3])
@@ -734,7 +798,7 @@ def make(kategori):
     return {"instruction": ins, "input": inp, "output": out, "kategori": kategori, "ozellikler": ",".join(oz),
             "tags": " ".join(f"[{t}]" for t in present), "mask_tags": " ".join(f"[{t}]" for t in sorted(mask))}
 
-MIX = [("tam", 0.34), ("beyaz_liste", 0.20), ("kara_liste", 0.14), ("kapsam_disi", 0.08), ("negatif", 0.20), ("grup", 0.04)]
+MIX = [("tam", 0.32), ("beyaz_liste", 0.19), ("kara_liste", 0.13), ("kapsam_disi", 0.08), ("negatif", 0.24), ("grup", 0.04)]
 
 def main():
     ap = argparse.ArgumentParser()
