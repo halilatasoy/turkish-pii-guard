@@ -13,6 +13,17 @@ modelinin `cagrigungor/turkish-pii-masking-benchmark` (1000 satır, tam eşleşm
 Kategori: tam 0.729 · beyaz liste 0.620 · kara liste 0.747 · kapsam dışı 0.730 · negatif 0.895
 Zor dilimler: caps 0.514 · uzun 0.521 · sözle 0.649 · çok kişi 0.450 · olmayan etiket talebi 0.604
 
+## Sonuçlar
+
+| Model | Eğitim | Tam eşleşme | Şema-nötr | beyaz | kara | kapsam dışı | negatif | tam |
+|---|---|---|---|---|---|---|---|---|
+| cagrigungor/pii-guard-turkish-270m | — | 0.743 | 0.773 | 0.620 | 0.747 | 0.730 | 0.895 | 0.729 |
+| **local_24k** (bu repo) | 24k satır, 1 epoch, M3 Ultra MPS, 38 dk | **0.882** | **0.903** | 0.900 | 0.893 | 0.960 | 0.865 | 0.854 |
+
+Dilimler (local_24k): caps 0.802 · uzun 0.656 · sözle 0.946 · çok kişi 0.600 · ekli 0.758 · kayıt 0.976 · olmayan etiket talebi 0.917.
+Kalan hatalar: uzun/çok kişili metinde kelime düşürme ("dekont da" → "dekont"), sayısal tuzaklarda yanlış etiket
+("sınav sonucu 13429 puan" → [KREDI_NOTU]), ek almış hesap no/TCKN karışması. Tam veri (300k, 2 epoch) GPU'da bekliyor.
+
 ## Yaklaşım
 
 Orijinal eğitim verisi (~400k) paylaşılmamış. Bu yüzden kendi sentetik üretecimizi yazdık ve modeli

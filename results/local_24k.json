@@ -1,0 +1,54 @@
+{
+  "model": "outputs/local_24k/final",
+  "n": 1000,
+  "exact_match": 0.882,
+  "schema_neutral": 0.9025,
+  "schema_neutral_n": 903,
+  "by_kategori": {
+    "beyaz_liste": 0.9,
+    "kapsam_disi": 0.96,
+    "kara_liste": 0.893,
+    "negatif": 0.865,
+    "tam": 0.854
+  },
+  "by_ozellik": {
+    "caps": {
+      "acc": 0.802,
+      "n": 111
+    },
+    "cok_kisi": {
+      "acc": 0.6,
+      "n": 20
+    },
+    "duz": {
+      "acc": 0.93,
+      "n": 285
+    },
+    "ekli": {
+      "acc": 0.758,
+      "n": 66
+    },
+    "kayit": {
+      "acc": 0.976,
+      "n": 247
+    },
+    "olmayan_etiket_talebi": {
+      "acc": 0.917,
+      "n": 48
+    },
+    "sozle": {
+      "acc": 0.946,
+      "n": 37
+    },
+    "tuzak": {
+      "acc": 0.865,
+      "n": 200
+    },
+    "uzun": {
+      "acc": 0.656,
+      "n": 96
+    }
+  },
+  "out_of_schema_rows": 0,
+  "seconds": 56
+}
