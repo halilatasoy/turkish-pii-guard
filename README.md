@@ -1,7 +1,7 @@
 # pii-guard-tr — Türkçe PII maskeleme modelini iyileştirme
 
-Hedef: `cagrigungor/pii-guard-turkish-270m` (Gemma-3-270m-it tabanlı, 53 etiket, talimat-koşullu maskeleme)
-modelinin `cagrigungor/turkish-pii-masking-benchmark` (1000 satır, tam eşleşme) skorunu yükseltmek.
+Hedef: Gemma-3-270m-it tabanlı, 53 etiketli, talimat-koşullu Türkçe PII maskeleme modelinin 1000 satırlık
+halka açık benchmark (satır düzeyi tam eşleşme) skorunu yükseltmek.
 
 ## Baseline (yerelde yeniden üretildi)
 
@@ -17,7 +17,7 @@ Zor dilimler: caps 0.514 · uzun 0.521 · sözle 0.649 · çok kişi 0.450 · ol
 
 | Model | Eğitim | Tam eşleşme | Şema-nötr | beyaz | kara | kapsam dışı | negatif | tam |
 |---|---|---|---|---|---|---|---|---|
-| cagrigungor/pii-guard-turkish-270m | — | 0.743 | 0.773 | 0.620 | 0.747 | 0.730 | 0.895 | 0.729 |
+| taban model (270m) | — | 0.743 | 0.773 | 0.620 | 0.747 | 0.730 | 0.895 | 0.729 |
 | **local_24k** → [halilatasoy/turkish-pii-detection-v01](https://huggingface.co/halilatasoy/turkish-pii-detection-v01) | 24k satır, 1 epoch, M3 Ultra MPS, 38 dk | **0.882** | **0.903** | 0.900 | 0.893 | 0.960 | 0.865 | 0.854 |
 
 Dilimler (local_24k): caps 0.802 · uzun 0.656 · sözle 0.946 · çok kişi 0.600 · ekli 0.758 · kayıt 0.976 · olmayan etiket talebi 0.917.
@@ -57,7 +57,7 @@ results/                 baseline_270m.{csv,json} ve sonraki koşular
 ```bash
 bash run_gpu.sh v1
 ```
-Varsayılan: 300k örnek, 2 epoch, lr 5e-5, batch 32, bf16, 768 token. Tek A100/H100'de ~1–1.5 saat.
+`BASE_MODEL` ve `BENCH_REPO` ortam değişkenleri ile taban model ve benchmark deposu verilir. Varsayılan: 300k örnek, 2 epoch, lr 5e-5, batch 32, bf16, 768 token. Tek A100/H100'de ~1–1.5 saat.
 
 Ek denemeler:
 ```bash

@@ -12,7 +12,7 @@ CARD = """---
 language:
 - tr
 license: gemma
-base_model: cagrigungor/pii-guard-turkish-270m
+base_model: google/gemma-3-270m-it
 pipeline_tag: text-generation
 library_name: transformers
 tags:
@@ -23,22 +23,20 @@ tags:
 - gdpr
 - turkish
 - privacy
-datasets:
-- cagrigungor/turkish-pii-masking-benchmark
 ---
 # {repo_name}
 
-`cagrigungor/pii-guard-turkish-270m` (Gemma-3-270m-it tabanlı) modelinin, zayıf dilimleri hedefleyen sentetik
-Türkçe bankacılık/ERP verisiyle **devam eğitimi** (continued full fine-tune). 53 PII etiketi, talimat-koşullu maskeleme
-(tam / beyaz liste / kara liste / kapsam dışı). Prompt biçimi orijinal modelle birebir aynıdır.
+Gemma-3-270m-it tabanlı Türkçe PII maskeleme modeli; zayıf dilimleri hedefleyen sentetik Türkçe bankacılık/ERP
+verisiyle **devam eğitimi** (continued full fine-tune) ile üretildi. 53 PII etiketi, talimat-koşullu maskeleme
+(tam / beyaz liste / kara liste / kapsam dışı). 
 
 Kod, veri üreteci ve değerlendirme: https://github.com/halilatasoy/turkish-pii-guard
 
-## Benchmark ([cagrigungor/turkish-pii-masking-benchmark](https://huggingface.co/datasets/cagrigungor/turkish-pii-masking-benchmark), 1000 satır, satır düzeyi tam eşleşme)
+## Benchmark (halka açık 1000 satırlık Türkçe PII maskeleme benchmark'ı, satır düzeyi tam eşleşme)
 
 | Model | Tam eşleşme (1000) | Şema-nötr (903) |
 |---|---|---|
-| cagrigungor/pii-guard-turkish-270m (taban) | 0.743 | 0.773 |
+| taban model (270m) | 0.743 | 0.773 |
 | **bu model** | **{exact}** | **{schema}** |
 
 Kategori: {by_kat}
